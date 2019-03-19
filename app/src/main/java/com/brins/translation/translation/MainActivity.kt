@@ -13,11 +13,21 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val animator = Animation.transfer(this,root_layout,"translationY",100f)
-        tv_origin.setOnClickListener {
-            root_layout.visibility = View.GONE
-            animator.duration = 800
-            animator.start()
+        val animator = Animation.transfer(this,input_card,"translationY",-300f)
+        val animator2 = Animation.transfer(this,input_card,"translationY",0f)
+        tv_origin.setOnFocusChangeListener { v, hasFocus ->
+            run {
+
+                if (hasFocus) {
+                    toolBarLayout.visibility = View.GONE
+                    animator.duration = 800
+                    animator.start()
+                } else {
+                    toolBarLayout.visibility = View.VISIBLE
+                    animator2.duration = 800
+                    animator2.start()
+                }
+            }
         }
 
 
