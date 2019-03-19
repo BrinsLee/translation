@@ -13,7 +13,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        val animator = Animation.transfer(this,input_card,"translationY",-300f)
+        val animator = Animation.transfer(this,input_card,"translationY",-150f)
         val animator2 = Animation.transfer(this,input_card,"translationY",0f)
         tv_origin.setOnFocusChangeListener { v, hasFocus ->
             run {
