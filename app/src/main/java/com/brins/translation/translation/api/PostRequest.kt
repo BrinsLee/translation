@@ -1,10 +1,16 @@
 package com.brins.translation.translation.api
 
-import retrofit2.http.POST
+import com.brins.translation.translation.AppConfig.BASEURL
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
-interface PostRequest {
+object PostRequest {
 
-    @POST("translate?doctype=json&jsonversion=&type=&keyfrom=&model=&mid=&imei=&vendor=&screen=&ssid=&network=&abtest=");
+    fun getRetrofitFactory () : PostRequest_Interface {
 
-
+        val retrofit = Retrofit.Builder().baseUrl(BASEURL)
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
+        return retrofit.create(PostRequest_Interface::class.java)
+    }
 }

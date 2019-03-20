@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="none"
+    android:background="@color/background"
+    android:id="@+id/root_layout"
+    tools:context=".MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolBarLayout"
+            layout="@layout/toolbar"/>
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                android:background="@color/background"
+                android:orientation="vertical">
+                <RelativeLayout
+                    android:id="@+id/language_selector"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp">
+
+                    <TextView
+                        android:id="@+id/origin_lan"
+                        android:text="中文"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/colorAccent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:drawableRight="@drawable/ic_down"/>
+
+                    <ImageButton
+                        android:id="@+id/switcher"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_switcher"
+                        android:layout_alignParentEnd="true"
+                        android:background="@color/button_alpha"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="10dp"
+                        android:scaleType="centerInside"/>
+                </RelativeLayout>
+
+                <android.support.v7.widget.CardView
+                    android:id="@+id/input_card"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp">
+                    <EditText
+                        android:id="@+id/tv_origin"
+                        android:hint="apple"
+                        android:gravity="top"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/textarea"
+                        android:padding="5dp"/>
+                </android.support.v7.widget.CardView>
+
+                <LinearLayout
+                    android:id="@+id/real_time_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/tv_chinese"
+                        android:text="汉语词汇查询"
+                        android:textSize="20sp"
+                        android:textColor="@color/colorAccent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginBottom="5dp"/>
+
+                    <TextView
+                        android:id="@+id/tv_translate"
+                        android:text="在线翻译"
+                        android:textSize="20sp"
+                        android:textColor="@color/colorAccent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp" />
+
+                    <!--<ImageView
+                        android:id="@+id/start_translate"
+                        android:layout_width="50dp"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginRight="20dp"
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_start_translate" />-->
+                </LinearLayout>
+                <RelativeLayout
+                    android:id="@+id/language_selector2"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:layout_margin="5dp">
+
+                    <TextView
+                        android:id="@+id/target_lan"
+                        android:text="英文"
+                        android:textSize="20sp"
+                        android:layout_marginLeft="10dp"
+                        android:textColor="@color/colorAccent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:drawableRight="@drawable/ic_down"/>
+                </RelativeLayout>
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    app:cardCornerRadius="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="5dp">
+
+                    <TextView
+                        android:id="@+id/tv_target"
+                        android:gravity="top"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/textarea"
+                        android:padding="5dp"/>
+
+                    <TextView
+                        android:id="@+id/more"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorAccent"
+                        android:text="更多"
+                        android:textSize="10sp"
+                        android:layout_gravity="bottom|end"
+                        android:layout_margin="10dp"/>
+                </android.support.v7.widget.CardView>
+
+                <ListView
+                    android:id="@+id/recent"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="2">
+                </ListView>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+    </LinearLayout>
+</android.support.design.widget.CoordinatorLayout>
