@@ -9,6 +9,7 @@ import android.text.Editable
 import android.text.Html
 import android.text.TextUtils
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,11 +17,17 @@ import android.widget.Toast
 
 import com.brins.translation.translation.R
 import com.brins.translation.translation.api.PostRequest
+import com.brins.translation.translation.api.PostRequest.StartTranslate
 import com.brins.translation.translation.api.PostRequest_Interface
 import com.brins.translation.translation.model.Translation
 import com.brins.translation.translation.utils.Animation
 import com.brins.translation.translation.utils.ToastUtils
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
+import io.reactivex.functions.Consumer
 import kotlinx.android.synthetic.main.fragment_main.*
+import okhttp3.ResponseBody
+import org.json.JSONArray
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -62,6 +69,24 @@ class mainfragment : Fragment(){
                 }
             }
         }
+        StartTranslate( object : Consumer<String>{
+            override fun accept(t: String?) {
+                if(TextUtils.isEmpty(t)){
+                    Toast.makeText(this@mainfragment.activity,"result is null",Toast.LENGTH_SHORT).show()
+                }else{
+
+                    Log.d("mainfragemnt",t)
+                    var result : String? = t
+                    /*val jsonArray = JSONArray(t.string()).getJSONArray(0)
+                    for (i in 0 .. jsonArray.length()) {
+                        result += jsonArray.getJSONArray(i).getString(0)
+                    }*/
+                    tv_target.text = t
+                }            }
+
+
+        },"apple")
+
     }
 
     override fun onAttach(context: Context) {
