@@ -26,8 +26,8 @@ public class AppConfig {
         m.put("Catalan","ca");
         m.put("Cebuano","ceb");
         m.put("Chichewa","ny");
-        m.put("Chinese Simplified","zh-cn");
-        m.put("Chinese Traditional","zh-tw");
+        m.put("Chinese Simplified","zh-CN");
+        m.put("Chinese Traditional","zh-TW");
         m.put("Corsican","co");
         m.put("Croatian","hr");
         m.put("Czech","cs");

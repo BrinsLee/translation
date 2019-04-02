@@ -14,12 +14,14 @@ import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import java.net.URLDecoder
 import java.net.URLEncoder
 import java.util.concurrent.TimeUnit
 
@@ -44,15 +46,16 @@ object PostRequest {
     }
 
     @SuppressLint("CheckResult")
-    fun StartTranslate(observer: Consumer<String>, content: String){
+    fun StartTranslate(observer: Observer<String>, content: String){
 
-        getRetrofitFactory().getCall(sourcelan = languageSelect["English"]!!
-                ,targetlan = languageSelect["Chinese Simplified"]!!, content = URLEncoder.encode(content,"UTF-8"))
+        getRetrofitFactory().getCall(sourcelan = languageSelect["Chinese Simplified"]!!
+                ,targetlan = languageSelect["English"]!!, content = content)
                 .subscribeOn(Schedulers.io())
                 .map (object : Function<ResponseBody,String>{
                     override fun apply(it: ResponseBody): String {
-                        Log.d("postRequest",it.string())
-                        return it.string()
+                        var result =it.string()
+                        Log.d("postRequest",result)
+                        return result
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())

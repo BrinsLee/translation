@@ -7,4 +7,6 @@
     <color name="background">#e9e6e6</color>
     <color name="button_alpha">#00ffffff</color>
     <color name="gray">#e2e2e2</color>
+
+    <color name="button">#00ffffff</color>
 </resources>
