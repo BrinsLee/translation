@@ -4,6 +4,7 @@ import android.app.Dialog
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.LinearLayoutManager
 import android.text.Editable
 import android.text.TextUtils
 import android.text.TextWatcher
@@ -11,19 +12,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import android.widget.SimpleAdapter
-import android.widget.Toast
+import android.widget.*
+import com.brins.translation.translation.AppConfig.languageSelect
 
 import com.brins.translation.translation.R
+import com.brins.translation.translation.adapter.RecyclerAdapter
 import com.brins.translation.translation.api.PostRequest
 import com.brins.translation.translation.api.PostRequest.StartTranslate
 import com.brins.translation.translation.api.PostRequest_Interface
+import com.brins.translation.translation.database.CollectionDatabaseHelper
+import com.brins.translation.translation.model.dataSet
 import com.brins.translation.translation.utils.DialogUtil
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.bottom_dialog.*
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.json.JSONArray
 
@@ -32,19 +33,52 @@ class mainfragment : Fragment(){
 
     var request : PostRequest_Interface? = null
     lateinit var dialog : Dialog
-
+    lateinit var database : CollectionDatabaseHelper
+    val data = dataSet()
+    var which = 0
+    var collectionList : ArrayList<dataSet>? = null
+    var collectionadapter : RecyclerAdapter? = null
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         request = PostRequest.getRetrofitFactory()
-
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        database = CollectionDatabaseHelper.getInstance(activity!!)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        main_collection.layoutManager = LinearLayoutManager(activity)
+        main_collection.isNestedScrollingEnabled = false
+        initFromDatabase()
+
+    }
+
+    private fun initFromDatabase() {
+
+        if (collectionList == null){
+            collectionList = database.getCollection()
+        }
+        if (collectionList?.size == 0) {
+            collectionadapter = RecyclerAdapter(collectionList)
+            main_collection.adapter = collectionadapter
+            return
+        }else{
+            collectionadapter = RecyclerAdapter(collectionList)
+            main_collection.adapter = collectionadapter
+
+        }
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
        /* val animator = Animation.transfer(context!!, input_card, "translationY", -150f)
         val animator2 = Animation.transfer(context!!, input_card, "translationY", 0f)*/
+        data.sourcelan = languageSelect[origin_lan.text]
+        data.targetlan = languageSelect[target_lan.text]
         setListener()
     }
 
@@ -66,9 +100,11 @@ class mainfragment : Fragment(){
         tv_origin.addTextChangedListener(object : TextWatcher{
             override fun afterTextChanged(s: Editable?) {
                 if (tv_origin.text.toString().length == 0 || TextUtils.isEmpty(tv_origin.text.toString())){
+                    collection.visibility = View.GONE
                     return
                 }else{
-                    Translate(tv_origin.text.toString())
+                    data.text = tv_origin.text.toString()
+                    Translate()
                 }
 
             }
@@ -77,16 +113,46 @@ class mainfragment : Fragment(){
             }
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+
+                collection.isChecked = false
+                    return
             }
 
         })
+        switcher.setOnClickListener {
+            changelan()
+        }
         origin_lan.setOnClickListener {
-
             dialog.show()
+            which = 0
         }
         target_lan.setOnClickListener {
             dialog.show()
+            which = 1
         }
+        collection.setOnCheckedChangeListener { buttonView, isChecked ->
+            if (isChecked){
+                val newdata = dataSet()
+                newdata.text = data.text
+                newdata.targetlan = data.targetlan
+                newdata.sourcelan = data.sourcelan
+                newdata.target = data.target
+                Log.d("mainfragment","${collectionList!!.size}")
+                collectionadapter!!.addData(newdata)
+                Log.d("mainfragment","${collectionList!!.size}")
+                database.insert(newdata)
+            }else{
+
+            }
+        }
+    }
+
+    private fun changelan() {
+        var temp = origin_lan.text
+        origin_lan.text = target_lan.text
+        target_lan.text = temp
+        data.sourcelan = languageSelect[origin_lan.text]
+        data.targetlan = languageSelect[target_lan.text]
     }
 
     override fun onAttach(context: Context) {
@@ -96,7 +162,7 @@ class mainfragment : Fragment(){
                 ,getString(R.string.Bosnian),getString(R.string.Bulgarian),getString(R.string.Catalan),getString(R.string.Cebuano),getString(R.string.Chichewa),getString(R.string.ChineseSimplified)
                 ,getString(R.string.ChineseTraditional),getString(R.string.Corsican),getString(R.string.Croatian),getString(R.string.Czech),getString(R.string.Danish),getString(R.string.Dutch)
                 ,getString(R.string.English),getString(R.string.Esperanto),getString(R.string.Estonian),getString(R.string.Filipino),getString(R.string.Finnish),getString(R.string.French)
-                ,getString(R.string.Frisian),getString(R.string.Galician),getString(R.string.Georgian),getString(R.string.German),getString(R.string.Geek),getString(R.string.Gujarati)
+                ,getString(R.string.Frisian),getString(R.string.Galician),getString(R.string.Georgian),getString(R.string.German),getString(R.string.Greek),getString(R.string.Gujarati)
                 ,getString(R.string.HaitianCreole),getString(R.string.Hausa),getString(R.string.Hawaiian),getString(R.string.Hebrew),getString(R.string.Hindi),getString(R.string.Hmong)
                 ,getString(R.string.Hungarian),getString(R.string.Icelandic),getString(R.string.Igbo),getString(R.string.Indonesian),getString(R.string.Irish),getString(R.string.Italian)
                 ,getString(R.string.Japanese),getString(R.string.Javanese),getString(R.string.Kannada),getString(R.string.Kazakh),getString(R.string.Khmer),getString(R.string.Korean)
@@ -114,6 +180,18 @@ class mainfragment : Fragment(){
         val view = LayoutInflater.from(context).inflate(R.layout.bottom_dialog,null)
         val list = view.findViewById(R.id.dialog_list) as ListView
         list.adapter = adapter
+        list.onItemClickListener = AdapterView.OnItemClickListener { parent, view, position, id ->
+            run {
+                val lan = list.getItemAtPosition(position).toString()
+                when (which) {
+                    0 -> origin_lan.text = lan
+                    1 -> target_lan.text = lan
+                }
+                data.sourcelan = languageSelect[origin_lan.text]
+                data.targetlan = languageSelect[target_lan.text]
+                dialog.dismiss()
+            }
+        }
         dialog = DialogUtil.Instance(context).createDialog(view)
     }
 
@@ -121,7 +199,7 @@ class mainfragment : Fragment(){
         super.onDetach()
     }
 
-    fun Translate(text : String){
+    fun Translate(){
         StartTranslate( object : Observer<String>{
             override fun onSubscribe(d: Disposable) {
 
@@ -142,8 +220,12 @@ class mainfragment : Fragment(){
                     for (i in 0 until  jsonArray.length()) {
                         result += jsonArray.getJSONArray(i).getString(0)
                     }
+                    if (result.length!=0 && !TextUtils.isEmpty(result)){
+                        collection.visibility = View.VISIBLE
+                    }
                     tv_target.text = result
-
+                    data.target = result
+                    data.createtime = System.currentTimeMillis()
                 }
             }
 
@@ -151,7 +233,7 @@ class mainfragment : Fragment(){
             }
 
 
-        },text)
+        },data)
     }
 
     companion object {

@@ -5,6 +5,7 @@ import android.util.Log
 import com.brins.translation.translation.AppConfig.BASEURL
 import com.brins.translation.translation.AppConfig.languageSelect
 import com.brins.translation.translation.model.Translation
+import com.brins.translation.translation.model.dataSet
 import io.reactivex.Observable
 import io.reactivex.Observer
 import io.reactivex.Scheduler
@@ -46,10 +47,10 @@ object PostRequest {
     }
 
     @SuppressLint("CheckResult")
-    fun StartTranslate(observer: Observer<String>, content: String){
+    fun StartTranslate(observer: Observer<String>, content: dataSet){
 
-        getRetrofitFactory().getCall(sourcelan = languageSelect["Chinese Simplified"]!!
-                ,targetlan = languageSelect["English"]!!, content = content)
+        getRetrofitFactory().getCall(sourcelan = content.sourcelan!!
+                ,targetlan = content.targetlan!!, content = content.text!!)
                 .subscribeOn(Schedulers.io())
                 .map (object : Function<ResponseBody,String>{
                     override fun apply(it: ResponseBody): String {

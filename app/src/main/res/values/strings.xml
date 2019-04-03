@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">简翻译</string>
+    <string name="app_name">translate</string>
     <string name="Automatic">Automatic</string>
     <string name="Afrikaans">Afrikaans</string>
     <string name="Albanian">Albanian</string>
@@ -31,7 +31,7 @@
     <string name="Galician">Galician</string>
     <string name="Georgian">Georgian</string>
     <string name="German">German</string>
-    <string name="Geek">Geek</string>
+    <string name="Greek">Geek</string>
     <string name="Gujarati">Gujarati</string>
     <string name="HaitianCreole">Haitian Creole</string>
     <string name="Hausa">Hausa</string>
@@ -105,7 +105,7 @@
     <string name="Yiddish">Yiddish</string>
     <string name="Yoruba">Yoruba</string>
     <string name="Zulu">Zulu</string>
-    <string name="lan_selecte">选择语言</string>
+    <string name="lan_selecte">select language</string>
 
 
 </resources>
