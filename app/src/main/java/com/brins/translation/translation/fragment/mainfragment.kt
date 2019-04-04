@@ -2,6 +2,9 @@ package com.brins.translation.translation.fragment
 
 import android.app.Dialog
 import android.content.Context
+import android.content.Context.MODE_PRIVATE
+import android.content.SharedPreferences
+import android.graphics.Bitmap
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
@@ -27,20 +30,34 @@ import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.json.JSONArray
+import android.support.v4.content.ContextCompat.getSystemService
+import com.brins.translation.translation.api.PostRequest.GetBitmap
+import com.brins.translation.translation.api.PostRequest.GetDaily
+import com.brins.translation.translation.model.Daily
+import com.brins.translation.translation.utils.BitmapUtil.Companion.decodeBitmap
+import com.brins.translation.translation.utils.BitmapUtil.Companion.saveBitmap
+import kotlinx.android.synthetic.main.daily_sencense.*
+import java.io.File
+import android.content.Intent
+import com.brins.translation.translation.R.string.daily_sentence
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class mainfragment : Fragment(){
 
-    var request : PostRequest_Interface? = null
     lateinit var dialog : Dialog
     lateinit var database : CollectionDatabaseHelper
     val data = dataSet()
+    var dailydata :Daily? = null
     var which = 0
     var collectionList : ArrayList<dataSet>? = null
     var collectionadapter : RecyclerAdapter? = null
+    var editor : SharedPreferences.Editor? = null
+    val sDateFormat = SimpleDateFormat("HH")
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
-        request = PostRequest.getRetrofitFactory()
         return inflater.inflate(R.layout.fragment_main, container, false)
     }
 
@@ -53,9 +70,96 @@ class mainfragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         main_collection.layoutManager = LinearLayoutManager(activity)
         main_collection.isNestedScrollingEnabled = false
+        daily_layout
         initFromDatabase()
+        editor = activity!!.getSharedPreferences("daily",MODE_PRIVATE).edit()
+        val sharedPreferences = activity!!.getSharedPreferences("daily", MODE_PRIVATE)
+        val content =  sharedPreferences.getString("content","")
+        val note = sharedPreferences.getString("note","")
+        val bitmap = sharedPreferences.getString("bitmap","")
+        val during = sharedPreferences.getInt("updatetime",0)
+        val time= sDateFormat.format(Date()).toInt()
+        Log.d("mainfragment","$time")
+        if (content == "" ||note == "" || bitmap == ""||time-during>24){
+            GetDaily(object : Observer<Daily>{
+                override fun onComplete() {
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                }
+
+                override fun onNext(daily: Daily) {
+                    dailydata =daily
+                    english.text = daily.content
+                    chinese.text = daily.note
+                    editor!!.putString("content",daily.content)
+                    editor!!.putString("note",daily.note)
+                    editor!!.putInt("updatetime",time)
+                    share.setOnClickListener{
+                        val caption = activity!!.getString(daily_sentence)
+                        val intent = Intent(Intent.ACTION_SEND)
+                        intent.type = "text/plain"
+                        intent.putExtra(Intent.EXTRA_TEXT, "$daily.content\n$daily.note")
+                        startActivity(Intent.createChooser(intent, caption))
+                    }
+                    getbitmap(daily.picture2)
+                }
+
+                override fun onError(e: Throwable) {
+                    Log.d("mainfragment","${e.message}")
+                    Toast.makeText(activity,"获取失败，请检查网络连接",Toast.LENGTH_SHORT).show()
+                }
+
+            })
+        }else{
+            english.text = content
+            chinese.text = note
+            val bitmap = decodeBitmap(bitmap)
+            share.setOnClickListener{
+                val caption = activity!!.getString(daily_sentence)
+                val intent = Intent(Intent.ACTION_SEND)
+                intent.type = "text/plain"
+                intent.putExtra(Intent.EXTRA_TEXT, "$content\n$note")
+                startActivity(Intent.createChooser(intent, caption))
+            }
+            if(bitmap!=null){
+                back.setImageBitmap(bitmap)
+            }
+
+        }
 
     }
+
+    private fun getbitmap(picture: String?) {
+
+        Log.d("mainfragment","$picture")
+        val id = picture!!.split("/")[picture.split("/").size-1]
+        Log.d("mainfragment","$id")
+        GetBitmap(object : Observer<Bitmap> {
+            override fun onComplete() {
+            }
+
+            override fun onSubscribe(d: Disposable) {
+            }
+
+            override fun onNext(bitmap: Bitmap) {
+                if(bitmap!=null){
+                    back.setImageBitmap(bitmap)
+                    val bitmap_string = saveBitmap(bitmap)
+                    editor!!.putString("bitmap",bitmap_string)
+                    editor!!.commit()
+
+                }
+            }
+
+            override fun onError(e: Throwable) {
+                Log.d("mainfragment","${e.message}")
+                Toast.makeText(activity,"获取失败，请检查网络连接",Toast.LENGTH_SHORT).show()
+            }
+
+        },id)
+    }
+
 
     private fun initFromDatabase() {
 
@@ -63,11 +167,11 @@ class mainfragment : Fragment(){
             collectionList = database.getCollection()
         }
         if (collectionList?.size == 0) {
-            collectionadapter = RecyclerAdapter(collectionList)
+            collectionadapter = RecyclerAdapter(collectionList,database!!)
             main_collection.adapter = collectionadapter
             return
         }else{
-            collectionadapter = RecyclerAdapter(collectionList)
+            collectionadapter = RecyclerAdapter(collectionList,database)
             main_collection.adapter = collectionadapter
 
         }
@@ -137,13 +241,57 @@ class mainfragment : Fragment(){
                 newdata.targetlan = data.targetlan
                 newdata.sourcelan = data.sourcelan
                 newdata.target = data.target
+                newdata.createtime = data.createtime
                 Log.d("mainfragment","${collectionList!!.size}")
-                collectionadapter!!.addData(newdata)
+                collectionadapter!!.addData(collectionList!!.size,newdata)
                 Log.d("mainfragment","${collectionList!!.size}")
                 database.insert(newdata)
-            }else{
-
             }
+        }
+        collection.setOnClickListener {
+            if (!collection.isChecked){
+                collectionadapter!!.removeData(collectionList!!.size-1)
+            }
+        }
+        copy.setOnClickListener {
+            if(data.target!=null){
+                CopyContent(data.target!!)
+            }
+        }
+
+        collectionadapter!!.setOnItemClickListener {
+            val origintext = it.findViewById<TextView>(R.id.tv_origin_text).text.toString()
+            val targettext = it.findViewById<TextView>(R.id.tv_target_text).text.toString()
+            val view = LayoutInflater.from(context).inflate(R.layout.content_full,null)
+            view.findViewById<TextView>(R.id.origin_content).text = origintext
+            view.findViewById<TextView>(R.id.target_content).text = targettext
+            val copy_origin = view.findViewById<ImageView>(R.id.copy_content)
+            val copy_target = view.findViewById<ImageView>(R.id.copy_target_content)
+            copy_origin.setOnClickListener{
+                CopyContent(origintext)
+            }
+            copy_target.setOnClickListener{
+                CopyContent(targettext)
+            }
+            val dialog = DialogUtil.Instance(activity!!).createDialog(view)
+            dialog.show()
+
+        }
+    }
+
+    private fun CopyContent(text : String) {
+        if (TextUtils.isEmpty(text)){
+            return
+        }
+        try {
+            val clipboard = context!!.getSystemService(Context.CLIPBOARD_SERVICE) as android.content.ClipboardManager
+            val clip_data = android.content.ClipData.newPlainText(
+                    "Tar", text)
+            clipboard.primaryClip = clip_data
+            Toast.makeText(activity,"已复制",Toast.LENGTH_SHORT).show()
+        }catch (e : Exception){
+            Toast.makeText(activity,"复制失败",Toast.LENGTH_SHORT).show()
+
         }
     }
 
@@ -202,11 +350,9 @@ class mainfragment : Fragment(){
     fun Translate(){
         StartTranslate( object : Observer<String>{
             override fun onSubscribe(d: Disposable) {
-
             }
 
             override fun onComplete() {
-
             }
 
             override fun onNext(t: String) {

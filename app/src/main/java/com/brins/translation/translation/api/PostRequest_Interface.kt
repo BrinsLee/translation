@@ -1,6 +1,7 @@
 package com.brins.translation.translation.api
 
 import com.brins.translation.translation.AppConfig.USER_AGENT
+import com.brins.translation.translation.model.Daily
 import com.brins.translation.translation.model.Translation
 import io.reactivex.Observable
 import okhttp3.ResponseBody
@@ -17,4 +18,10 @@ interface PostRequest_Interface {
     fun getCall(@Query("client") client: String ="gtx",@Query("sl")sourcelan : String
                 ,@Query("tl")targetlan: String, @Query("dt")t :String="t", @Query("q")content: String): Observable <ResponseBody>
 
+    @GET("dsapi")
+    fun getDaily(): Observable<Daily>
+
+
+    @GET("news/word/{name}")
+    fun getBitmap(@Path("name") name :String):Observable<ResponseBody>
 }

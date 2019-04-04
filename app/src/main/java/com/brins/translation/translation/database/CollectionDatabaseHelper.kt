@@ -39,6 +39,6 @@ class CollectionDatabaseHelper (context: Context) {
 
     fun delete(dataset : dataSet){
         val time = dataset.createtime
-        appDatabase.dao()
+        appDatabase.dao().deleteViaTime(time)
     }
 }

@@ -4,21 +4,27 @@
     android:layout_width="match_parent"
     android:layout_height="70dp"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="10dp"
+    app:cardCornerRadius="5dp"
     android:background="@android:color/white"
-    android:layout_marginBottom="3dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp">
+    android:layout_marginBottom="1dp"
+    android:layout_marginLeft="2dp"
+    android:layout_marginRight="2dp">
 
     <LinearLayout
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="2"
         android:layout_height="match_parent">
     <TextView
         android:id="@+id/tv_origin_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
+        android:lines="1"
         android:textColor="@android:color/black"
         android:layout_margin="5dp"/>
     <TextView
@@ -26,8 +32,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="15sp"
+        android:lines="1"
         android:textColor="@android:color/darker_gray"
         android:layout_margin="5dp"/>
+    </LinearLayout>
+        <ImageView
+            android:id="@+id/del"
+            android:src="@drawable/ic_clear"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="centerInside"/>
     </LinearLayout>
 
        <!-- <LinearLayout

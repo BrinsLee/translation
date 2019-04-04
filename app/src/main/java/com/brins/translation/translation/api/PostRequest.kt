@@ -1,9 +1,11 @@
 package com.brins.translation.translation.api
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
-import com.brins.translation.translation.AppConfig.BASEURL
-import com.brins.translation.translation.AppConfig.languageSelect
+import com.brins.translation.translation.AppConfig.*
+import com.brins.translation.translation.model.Daily
 import com.brins.translation.translation.model.Translation
 import com.brins.translation.translation.model.dataSet
 import io.reactivex.Observable
@@ -22,16 +24,26 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import java.io.ByteArrayOutputStream
 import java.io.InputStream
+import java.net.IDN
 import java.net.URLDecoder
 import java.net.URLEncoder
 import java.util.concurrent.TimeUnit
 
 object PostRequest {
 
-    fun getRetrofitFactory () : PostRequest_Interface {
+    fun getRetrofitFactory (baseurl: String) : PostRequest_Interface {
 
-        val retrofit = Retrofit.Builder().baseUrl(BASEURL)
+        val retrofit = Retrofit.Builder().baseUrl(baseurl)
                 .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .client(getClient())
+                .build()
+        return retrofit.create(PostRequest_Interface::class.java)
+    }
+
+    fun getbitmapRetrofitFactory (baseurl: String) : PostRequest_Interface {
+
+        val retrofit = Retrofit.Builder().baseUrl(baseurl)
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(getClient())
                 .build()
@@ -49,7 +61,7 @@ object PostRequest {
     @SuppressLint("CheckResult")
     fun StartTranslate(observer: Observer<String>, content: dataSet){
 
-        getRetrofitFactory().getCall(sourcelan = content.sourcelan!!
+        getRetrofitFactory(BASEURL).getCall(sourcelan = content.sourcelan!!
                 ,targetlan = content.targetlan!!, content = content.text!!)
                 .subscribeOn(Schedulers.io())
                 .map (object : Function<ResponseBody,String>{
@@ -62,6 +74,29 @@ object PostRequest {
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(observer)
     }
+
+    fun GetDaily(observer: Observer<Daily>){
+        getRetrofitFactory(DAILY).getDaily().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer)
+    }
+
+
+    fun GetBitmap(observer: Observer<Bitmap> ,path : String){
+        getbitmapRetrofitFactory(IMAGE).getBitmap(path)
+                .subscribeOn(Schedulers.io())
+                .map(object : Function<ResponseBody,Bitmap>{
+                    override fun apply(it: ResponseBody): Bitmap {
+                        val result = it.byteStream()
+                        val bitmap = BitmapFactory.decodeStream(result)
+                        return bitmap
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(observer)
+    }
+
+
 
 
 }

@@ -106,6 +106,9 @@
     <string name="Yoruba">Yoruba</string>
     <string name="Zulu">Zulu</string>
     <string name="lan_selecte">select language</string>
+    <string name="origin_content">original</string>
+    <string name="target_content">translation</string>
+    <string name="daily_sentence">daily sentence</string>
 
 
 </resources>
