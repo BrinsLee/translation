@@ -8,6 +8,7 @@ public class AppConfig {
     public static final String BASEURL = "https://translate.google.cn/";
     public static final String DAILY = "http://open.iciba.com/";
     public static final String IMAGE = "http://cdn.iciba.com/";
+    public static final String CHAOSHAN = "https://www.mogher.com/";
     public static final String USER_AGENT = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36";
     public static final Map<String ,String > languageSelect = languageSelected();
 
@@ -247,6 +248,8 @@ public class AppConfig {
         m.put("Yiddish","yi");
         m.put("Yoruba","yo");
         m.put("Zulu","zu");
+        m.put("Chaoshan","ch");
+        m.put("潮汕话","ch");
         return m;
 
     }

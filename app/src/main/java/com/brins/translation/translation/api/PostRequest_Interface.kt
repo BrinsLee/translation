@@ -24,4 +24,7 @@ interface PostRequest_Interface {
 
     @GET("news/word/{name}")
     fun getBitmap(@Path("name") name :String):Observable<ResponseBody>
+
+    @GET("baike")//https://www.mogher.com/baike?kw=你好
+    fun getChaoshan(@Query("kw") kw :String):Observable<ResponseBody>
 }

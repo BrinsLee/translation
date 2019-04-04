@@ -40,6 +40,7 @@ import kotlinx.android.synthetic.main.daily_sencense.*
 import java.io.File
 import android.content.Intent
 import com.brins.translation.translation.R.string.daily_sentence
+import org.jsoup.Jsoup
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -307,7 +308,7 @@ class mainfragment : Fragment(){
         super.onAttach(context)
         val language = arrayOf(getString(R.string.Afrikaans),getString(R.string.Albanian)
                 ,getString(R.string.Arabic),getString(R.string.Armenian),getString(R.string.Azerbaijani),getString(R.string.Basque),getString(R.string.Belarusian),getString(R.string.Bengali)
-                ,getString(R.string.Bosnian),getString(R.string.Bulgarian),getString(R.string.Catalan),getString(R.string.Cebuano),getString(R.string.Chichewa),getString(R.string.ChineseSimplified)
+                ,getString(R.string.Bosnian),getString(R.string.Bulgarian),getString(R.string.Catalan),getString(R.string.Cebuano),getString(R.string.Chaoshan),getString(R.string.Chichewa),getString(R.string.ChineseSimplified)
                 ,getString(R.string.ChineseTraditional),getString(R.string.Corsican),getString(R.string.Croatian),getString(R.string.Czech),getString(R.string.Danish),getString(R.string.Dutch)
                 ,getString(R.string.English),getString(R.string.Esperanto),getString(R.string.Estonian),getString(R.string.Filipino),getString(R.string.Finnish),getString(R.string.French)
                 ,getString(R.string.Frisian),getString(R.string.Galician),getString(R.string.Georgian),getString(R.string.German),getString(R.string.Greek),getString(R.string.Gujarati)
@@ -360,18 +361,28 @@ class mainfragment : Fragment(){
                     Toast.makeText(this@mainfragment.activity,"result is null",Toast.LENGTH_SHORT).show()
                 }else{
 
-                    Log.d("mainfragemnt",t)
-                    var result = ""
-                    val jsonArray = JSONArray(t).getJSONArray(0)
-                    for (i in 0 until  jsonArray.length()) {
-                        result += jsonArray.getJSONArray(i).getString(0)
+                    if (data.targetlan.equals("ch")||data.sourcelan.equals("ch")) {
+                        if (t.length != 0 && !TextUtils.isEmpty(t)) {
+                            collection.visibility = View.VISIBLE
+                            tv_target.text = t
+                            data.target = t
+                            data.createtime = System.currentTimeMillis()
+                        }else
+                            tv_target.text = "抱歉，仅支持中文与潮汕话翻译"
+                    }else {
+                        Log.d("mainfragemnt", t)
+                        var result = ""
+                        val jsonArray = JSONArray(t).getJSONArray(0)
+                        for (i in 0 until jsonArray.length()) {
+                            result += jsonArray.getJSONArray(i).getString(0)
+                        }
+                        if (result.length != 0 && !TextUtils.isEmpty(result)) {
+                            collection.visibility = View.VISIBLE
+                        }
+                        tv_target.text = result
+                        data.target = result
+                        data.createtime = System.currentTimeMillis()
                     }
-                    if (result.length!=0 && !TextUtils.isEmpty(result)){
-                        collection.visibility = View.VISIBLE
-                    }
-                    tv_target.text = result
-                    data.target = result
-                    data.createtime = System.currentTimeMillis()
                 }
             }
 
@@ -381,6 +392,7 @@ class mainfragment : Fragment(){
 
         },data)
     }
+
 
     companion object {
         @JvmStatic

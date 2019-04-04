@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import android.view.View
 import com.brins.translation.translation.AppConfig.*
 import com.brins.translation.translation.model.Daily
 import com.brins.translation.translation.model.Translation
@@ -15,8 +16,10 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.fragment_main.*
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
+import org.jsoup.Jsoup
 import org.reactivestreams.Subscriber
 import org.reactivestreams.Subscription
 import retrofit2.Retrofit
@@ -61,18 +64,34 @@ object PostRequest {
     @SuppressLint("CheckResult")
     fun StartTranslate(observer: Observer<String>, content: dataSet){
 
-        getRetrofitFactory(BASEURL).getCall(sourcelan = content.sourcelan!!
-                ,targetlan = content.targetlan!!, content = content.text!!)
-                .subscribeOn(Schedulers.io())
-                .map (object : Function<ResponseBody,String>{
-                    override fun apply(it: ResponseBody): String {
-                        var result =it.string()
-                        Log.d("postRequest",result)
-                        return result
-                    }
-                })
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(observer)
+        if (content.targetlan.equals("ch")||content.sourcelan.equals("ch")){
+            getRetrofitFactory(CHAOSHAN).getChaoshan(content.text!!)
+                    .subscribeOn(Schedulers.io())
+                    .map (object : Function<ResponseBody,String>{
+                        override fun apply(it: ResponseBody): String {
+                            var raw =it.string()
+                            val result = getDoc(raw)
+                            Log.d("postRequest",result)
+                            return result
+                        }
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(observer)
+
+        }else {
+            getRetrofitFactory(BASEURL).getCall(sourcelan = content.sourcelan!!
+                    , targetlan = content.targetlan!!, content = content.text!!)
+                    .subscribeOn(Schedulers.io())
+                    .map(object : Function<ResponseBody, String> {
+                        override fun apply(it: ResponseBody): String {
+                            var result = it.string()
+                            Log.d("postRequest", result)
+                            return result
+                        }
+                    })
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe(observer)
+        }
     }
 
     fun GetDaily(observer: Observer<Daily>){
@@ -97,6 +116,22 @@ object PostRequest {
     }
 
 
+    private fun getDoc(t: String):String {
+
+        val doc = Jsoup.parse(t)
+        val element = doc.select("table[class=table table-bordered table-striped]>tbody>tr")
+        val text_elememts = element.select("td[class = hidden-480] a")
+        val sb = StringBuilder()
+        for (elm in text_elememts){
+            sb.append("${elm.text()}\n")
+        }
+        if (sb.length!=0){
+            return sb.toString()
+        }else{
+            return ""
+        }
+
+    }
 
 
 }
