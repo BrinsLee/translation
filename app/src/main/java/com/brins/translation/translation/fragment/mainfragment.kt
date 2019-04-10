@@ -81,7 +81,7 @@ class mainfragment : Fragment(){
         val during = sharedPreferences.getInt("updatetime",0)
         val time= sDateFormat.format(Date()).toInt()
         Log.d("mainfragment","$time")
-        if (content == "" ||note == "" || bitmap == ""||time-during>24){
+        if (content == "" ||note == "" || bitmap == ""||time-during>2||during-time>7){
             GetDaily(object : Observer<Daily>{
                 override fun onComplete() {
                 }
@@ -302,6 +302,7 @@ class mainfragment : Fragment(){
         target_lan.text = temp
         data.sourcelan = languageSelect[origin_lan.text]
         data.targetlan = languageSelect[target_lan.text]
+        Translate()
     }
 
     override fun onAttach(context: Context) {
@@ -387,6 +388,8 @@ class mainfragment : Fragment(){
             }
 
             override fun onError(t: Throwable) {
+
+                Toast.makeText(activity,getString(R.string.net_error),Toast.LENGTH_SHORT).show()
             }
 
 

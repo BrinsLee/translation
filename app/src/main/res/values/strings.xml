@@ -110,6 +110,7 @@
     <string name="target_content">translation</string>
     <string name="daily_sentence">daily sentence</string>
     <string name="Chaoshan">Chaoshan</string>
+    <string name="net_error">network error please check the network connection</string>
 
 
 </resources>
