@@ -43,7 +43,7 @@
             android:layout_marginEnd="5dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="centerInside"/>
+            android:contentDescription="TODO" android:scaleType="centerInside"/>
     </LinearLayout>
 
        <!-- <LinearLayout

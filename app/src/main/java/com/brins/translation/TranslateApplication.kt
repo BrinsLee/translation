@@ -1,4 +1,4 @@
-package com.brins.translation.translation
+package com.brins.translation
 
 import android.app.Application
 

@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:background="@color/background"
     android:id="@+id/root_layout"
-    tools:context=".MainActivity">
+    tools:context="com.brins.translation.MainActivity">
     <!--<android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"

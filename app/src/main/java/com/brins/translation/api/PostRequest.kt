@@ -1,35 +1,22 @@
-package com.brins.translation.translation.api
+package com.brins.translation.api
 
 import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import android.view.View
-import com.brins.translation.translation.AppConfig.*
-import com.brins.translation.translation.model.Daily
-import com.brins.translation.translation.model.Translation
-import com.brins.translation.translation.model.dataSet
-import io.reactivex.Observable
+import com.brins.translation.AppConfig.*
+import com.brins.translation.model.Daily
+import com.brins.translation.model.dataSet
 import io.reactivex.Observer
-import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.functions.Consumer
 import io.reactivex.functions.Function
 import io.reactivex.schedulers.Schedulers
-import kotlinx.android.synthetic.main.fragment_main.*
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
 import org.jsoup.Jsoup
-import org.reactivestreams.Subscriber
-import org.reactivestreams.Subscription
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
-import java.io.ByteArrayOutputStream
-import java.io.InputStream
-import java.net.IDN
-import java.net.URLDecoder
-import java.net.URLEncoder
 import java.util.concurrent.TimeUnit
 
 object PostRequest {

@@ -1,13 +1,10 @@
-package com.brins.translation.translation.api
+package com.brins.translation.api
 
-import com.brins.translation.translation.AppConfig.USER_AGENT
-import com.brins.translation.translation.model.Daily
-import com.brins.translation.translation.model.Translation
+import com.brins.translation.AppConfig.USER_AGENT
+import com.brins.translation.model.Daily
 import io.reactivex.Observable
 import okhttp3.ResponseBody
-import retrofit2.Call
 import retrofit2.http.*
-import java.io.InputStream
 
 
 interface PostRequest_Interface {

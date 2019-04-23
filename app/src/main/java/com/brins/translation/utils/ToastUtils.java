@@ -1,10 +1,10 @@
 
-package com.brins.translation.translation.utils;
+package com.brins.translation.utils;
 
 import android.content.Context;
 import android.widget.Toast;
 
-import com.brins.translation.translation.TranslateApplication;
+import com.brins.translation.TranslateApplication;
 
 
 public class ToastUtils {

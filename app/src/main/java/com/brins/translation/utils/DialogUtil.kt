@@ -1,22 +1,18 @@
-package com.brins.translation.translation.utils
+package com.brins.translation.utils
 
 import android.app.Dialog
 import android.content.Context
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.brins.translation.translation.R
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.View
-import android.widget.ArrayAdapter
-import android.widget.ListView
-import kotlinx.android.synthetic.main.bottom_dialog.*
 
 
 class DialogUtil private constructor(var context :Context){
 
     companion object {
-       fun Instance(context: Context):DialogUtil{
+       fun Instance(context: Context): DialogUtil {
            return DialogUtil(context)
        }
     }

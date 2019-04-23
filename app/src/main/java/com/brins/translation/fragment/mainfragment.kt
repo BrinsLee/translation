@@ -1,4 +1,4 @@
-package com.brins.translation.translation.fragment
+package com.brins.translation.fragment
 
 import android.app.Dialog
 import android.content.Context
@@ -16,31 +16,26 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
-import com.brins.translation.translation.AppConfig.languageSelect
+import com.brins.translation.AppConfig.languageSelect
 
 import com.brins.translation.translation.R
-import com.brins.translation.translation.adapter.RecyclerAdapter
-import com.brins.translation.translation.api.PostRequest
-import com.brins.translation.translation.api.PostRequest.StartTranslate
-import com.brins.translation.translation.api.PostRequest_Interface
-import com.brins.translation.translation.database.CollectionDatabaseHelper
-import com.brins.translation.translation.model.dataSet
-import com.brins.translation.translation.utils.DialogUtil
+import com.brins.translation.adapter.RecyclerAdapter
+import com.brins.translation.api.PostRequest.StartTranslate
+import com.brins.translation.database.CollectionDatabaseHelper
+import com.brins.translation.model.dataSet
+import com.brins.translation.utils.DialogUtil
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.fragment_main.*
 import org.json.JSONArray
-import android.support.v4.content.ContextCompat.getSystemService
-import com.brins.translation.translation.api.PostRequest.GetBitmap
-import com.brins.translation.translation.api.PostRequest.GetDaily
-import com.brins.translation.translation.model.Daily
-import com.brins.translation.translation.utils.BitmapUtil.Companion.decodeBitmap
-import com.brins.translation.translation.utils.BitmapUtil.Companion.saveBitmap
+import com.brins.translation.api.PostRequest.GetBitmap
+import com.brins.translation.api.PostRequest.GetDaily
+import com.brins.translation.model.Daily
+import com.brins.translation.utils.BitmapUtil.Companion.decodeBitmap
+import com.brins.translation.utils.BitmapUtil.Companion.saveBitmap
 import kotlinx.android.synthetic.main.daily_sencense.*
-import java.io.File
 import android.content.Intent
 import com.brins.translation.translation.R.string.daily_sentence
-import org.jsoup.Jsoup
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -50,7 +45,7 @@ class mainfragment : Fragment(){
     lateinit var dialog : Dialog
     lateinit var database : CollectionDatabaseHelper
     val data = dataSet()
-    var dailydata :Daily? = null
+    var dailydata : Daily? = null
     var which = 0
     var collectionList : ArrayList<dataSet>? = null
     var collectionadapter : RecyclerAdapter? = null
@@ -168,11 +163,11 @@ class mainfragment : Fragment(){
             collectionList = database.getCollection()
         }
         if (collectionList?.size == 0) {
-            collectionadapter = RecyclerAdapter(collectionList,database!!)
+            collectionadapter = RecyclerAdapter(collectionList, database!!)
             main_collection.adapter = collectionadapter
             return
         }else{
-            collectionadapter = RecyclerAdapter(collectionList,database)
+            collectionadapter = RecyclerAdapter(collectionList, database)
             main_collection.adapter = collectionadapter
 
         }
@@ -302,6 +297,9 @@ class mainfragment : Fragment(){
         target_lan.text = temp
         data.sourcelan = languageSelect[origin_lan.text]
         data.targetlan = languageSelect[target_lan.text]
+        if(data.text == null || data.target == null){
+            return
+        }
         Translate()
     }
 

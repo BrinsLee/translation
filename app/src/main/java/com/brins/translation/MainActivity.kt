@@ -1,11 +1,11 @@
-package com.brins.translation.translation
+package com.brins.translation
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.KeyEvent
-import com.brins.translation.translation.fragment.mainfragment
+import com.brins.translation.fragment.mainfragment
 import android.widget.Toast
 import android.os.Process;
-
+import com.brins.translation.translation.R
 
 
 class MainActivity : AppCompatActivity() {

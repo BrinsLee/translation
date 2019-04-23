@@ -1,8 +1,8 @@
-package com.brins.translation.translation.database
+package com.brins.translation.database
 
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.Query
-import com.brins.translation.translation.model.dataSet
+import com.brins.translation.model.dataSet
 
 @android.arch.persistence.room.Dao
 interface Dao {

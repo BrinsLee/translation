@@ -1,4 +1,4 @@
-package com.brins.translation.translation.utils
+package com.brins.translation.utils
 
 import android.animation.ObjectAnimator
 import android.content.Context

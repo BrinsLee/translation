@@ -1,8 +1,8 @@
-package com.brins.translation.translation.database
+package com.brins.translation.database
 
 import android.arch.persistence.room.Room
 import android.content.Context
-import com.brins.translation.translation.model.dataSet
+import com.brins.translation.model.dataSet
 
 class CollectionDatabaseHelper (context: Context) {
 
@@ -24,7 +24,7 @@ class CollectionDatabaseHelper (context: Context) {
             return INSTANCE!!
         }
     }
-    fun insert(collection:dataSet){
+    fun insert(collection: dataSet){
 
         appDatabase.dao().addCollection(collection)
     }

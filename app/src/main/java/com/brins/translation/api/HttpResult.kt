@@ -1,4 +1,4 @@
-package com.brins.translation.translation.api
+package com.brins.translation.api
 
 import okhttp3.ResponseBody
 

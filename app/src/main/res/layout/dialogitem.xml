@@ -7,7 +7,7 @@
         android:id="@+id/iv_select"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:scaleType="centerInside"
+        android:contentDescription="TODO" android:scaleType="centerInside"
         android:layout_margin="5dp"/>
     <TextView
         android:id="@+id/tv_lan"

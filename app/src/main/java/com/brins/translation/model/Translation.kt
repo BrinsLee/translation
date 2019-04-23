@@ -1,4 +1,4 @@
-package com.brins.translation.translation.model
+package com.brins.translation.model
 
 class Translation {
     var type : String? = null

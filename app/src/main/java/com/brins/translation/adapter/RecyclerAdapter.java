@@ -1,4 +1,4 @@
-package com.brins.translation.translation.adapter;
+package com.brins.translation.adapter;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -9,11 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.brins.translation.translation.R;
-import com.brins.translation.translation.database.CollectionDatabase;
-import com.brins.translation.translation.database.CollectionDatabaseHelper;
-import com.brins.translation.translation.model.dataSet;
-
-import org.w3c.dom.Text;
+import com.brins.translation.database.CollectionDatabaseHelper;
+import com.brins.translation.model.dataSet;
 
 import java.util.List;
 

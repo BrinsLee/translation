@@ -1,4 +1,4 @@
-package com.brins.translation.translation.utils
+package com.brins.translation.utils
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

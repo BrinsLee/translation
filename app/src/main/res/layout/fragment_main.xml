@@ -8,7 +8,7 @@
     android:scrollbars="none"
     android:background="@color/background"
     android:id="@+id/root_layout"
-    tools:context=".MainActivity">
+    tools:context="com.brins.translation.MainActivity">
 
 
     <LinearLayout
@@ -33,155 +33,160 @@
 
             </android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
-            <LinearLayout
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:background="@color/background"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:id="@+id/language_selector"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_margin="5dp">
+
+                <TextView
+                    android:id="@+id/origin_lan"
+                    android:text="简体中文"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/colorAccent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:drawableRight="@drawable/ic_down"/>
+
+                <ImageButton
+                    android:id="@+id/switcher"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_switcher"
+                    android:layout_centerHorizontal="true"
+                    android:background="@color/button_alpha"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="10dp"
+                    android:contentDescription="TODO" android:scaleType="centerInside"/>
+
+                <TextView
+                    android:id="@+id/target_lan"
+                    android:text="英语"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/colorAccent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:drawableRight="@drawable/ic_down"/>
+            </RelativeLayout>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/input_card"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                app:cardCornerRadius="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="5dp">
+                <EditText
+                    android:id="@+id/tv_origin"
+                    android:hint="请输入文本"
+                    android:gravity="top"
+                    android:scrollbars="vertical"
+                    android:lines="10"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/textarea"
+                    android:inputType="" android:padding="5dp"/>
+            </android.support.v7.widget.CardView>
+
+            <RelativeLayout
+                android:id="@+id/real_time_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_translate"
+                    android:text="在线翻译"
+                    android:textSize="20sp"
+                    android:textColor="@color/colorAccent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="20dp" />
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_height="wrap_content">
+                    <ImageView
+                        android:id="@+id/copy"
+                        android:contentDescription="TODO" android:src="@drawable/ic_copy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="5dp"/>
+                    <android.support.v7.widget.AppCompatCheckBox
+                        android:id="@+id/collection"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_marginEnd="10dp"
+                        android:layout_gravity="end"
+                        android:visibility="gone"
+                        style="@style/CheckBox_collection"/>
+                </LinearLayout>
+                <!--<ImageView
+                    android:id="@+id/start_translate"
+                    android:layout_width="50dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginRight="20dp"
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_start_translate" />-->
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/target_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior"
-                android:background="@color/background"
-                android:orientation="vertical">
-                <RelativeLayout
-                    android:id="@+id/language_selector"
-                    android:layout_width="match_parent"
-                    android:layout_height="40dp"
-                    android:layout_margin="5dp">
-
-                    <TextView
-                        android:id="@+id/origin_lan"
-                        android:text="简体中文"
-                        android:textSize="20sp"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@color/colorAccent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:drawableRight="@drawable/ic_down"/>
-
-                    <ImageButton
-                        android:id="@+id/switcher"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@drawable/ic_switcher"
-                        android:layout_centerHorizontal="true"
-                        android:background="@color/button_alpha"
-                        android:layout_centerVertical="true"
-                        android:layout_marginEnd="10dp"
-                        android:scaleType="centerInside"/>
-
-                    <TextView
-                        android:id="@+id/target_lan"
-                        android:text="英语"
-                        android:textSize="20sp"
-                        android:layout_marginLeft="10dp"
-                        android:textColor="@color/colorAccent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true"
-                        android:drawableRight="@drawable/ic_down"/>
-                </RelativeLayout>
+                android:layout_margin="5dp"
+                android:visibility="gone">
 
                 <android.support.v7.widget.CardView
-                    android:id="@+id/input_card"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     app:cardCornerRadius="10dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:layout_marginBottom="5dp">
-                    <EditText
-                        android:id="@+id/tv_origin"
-                        android:hint="请输入文本"
+
+                    <TextView
+                        android:id="@+id/tv_target"
                         android:gravity="top"
                         android:scrollbars="vertical"
                         android:lines="10"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:background="@drawable/textarea"
-                        android:inputType="" android:padding="5dp"/>
+                        android:textSize="15sp"
+                        android:padding="5dp"/>
+
                 </android.support.v7.widget.CardView>
+            </RelativeLayout>
+            <include
+                android:id="@+id/daily"
+                layout="@layout/daily_sencense"/>
 
-                <RelativeLayout
-                    android:id="@+id/real_time_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <TextView
-                        android:id="@+id/tv_translate"
-                        android:text="在线翻译"
-                        android:textSize="20sp"
-                        android:textColor="@color/colorAccent"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="20dp" />
-
-                    <LinearLayout
-                        android:orientation="horizontal"
-                        android:layout_width="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_height="wrap_content">
-                        <ImageView
-                            android:id="@+id/copy"
-                            android:src="@drawable/ic_copy"
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_marginEnd="5dp"/>
-                        <android.support.v7.widget.AppCompatCheckBox
-                            android:id="@+id/collection"
-                            android:layout_width="wrap_content"
-                            android:layout_height="30dp"
-                            android:layout_marginEnd="10dp"
-                            android:layout_gravity="end"
-                            android:visibility="gone"
-                            style="@style/CheckBox_collection"/>
-                    </LinearLayout>
-                    <!--<ImageView
-                        android:id="@+id/start_translate"
-                        android:layout_width="50dp"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:layout_alignParentEnd="true"
-                        android:layout_marginRight="20dp"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_start_translate" />-->
-                </RelativeLayout>
-                <RelativeLayout
-                    android:id="@+id/target_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_margin="5dp"
-                    android:visibility="gone">
-
-                    <android.support.v7.widget.CardView
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        app:cardCornerRadius="10dp"
-                        android:layout_marginLeft="10dp"
-                        android:layout_marginRight="10dp"
-                        android:layout_marginBottom="5dp">
-
-                        <TextView
-                            android:id="@+id/tv_target"
-                            android:gravity="top"
-                            android:scrollbars="vertical"
-                            android:lines="10"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@drawable/textarea"
-                            android:textSize="15sp"
-                            android:padding="5dp"/>
-
-                    </android.support.v7.widget.CardView>
-                </RelativeLayout>
-                <include
-                    android:id="@+id/daily"
-                    layout="@layout/daily_sencense"/>
-            </LinearLayout>
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/main_collection"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp">
-        </android.support.v7.widget.RecyclerView>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/main_collection"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp">
+            </android.support.v7.widget.RecyclerView>
+        </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
 </android.support.design.widget.CoordinatorLayout>
